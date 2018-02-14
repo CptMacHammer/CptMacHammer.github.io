@@ -6,7 +6,7 @@ var miners;
 var debris;
 var obstacle;
 var gameTimer;
-var totalDebris = 400;
+var totalDebris = Math.floor(Math.random() * 600) + 100;
 var MARGIN = 10;
 
 
