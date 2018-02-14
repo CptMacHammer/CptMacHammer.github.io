@@ -4,9 +4,10 @@ var miner2;
 var miner1Image,miner2Image;
 var miners;
 var debris;
-var obstacle;
+var obstacles;
 var gameTimer;
-var totalDebris = Math.floor(Math.random() * 600) + 100;
+var winScore = 35;
+var totalDebris = Math.floor(Math.random() * 100) + 25;
 var MARGIN = 10;
 
 
@@ -37,6 +38,7 @@ function setup(){
   }
 
   debris = new Group();
+  obstacles = new Group();
 
   for(var i = 0; i<totalDebris; i++) {
     var ang = random(360);
@@ -51,21 +53,12 @@ function draw(){
   // background
   background(0);
 
-  fill(255);
+  fill('#ffffff');
   textAlign(CENTER);
   text("Miner 1: " + miners[0].score.toString(), MARGIN+20, 20);
   text("Miner 2: " + miners[1].score.toString(), width - MARGIN-30, 20);
 
-  // game timer
-  // If game timer reaches 0 end the game.
-  // Display the high score and declare a winner
-
-
-  // Every 1 second in the game loop
-  // spawn random debris and random obstacles
-  // update debris and obstacle movement
-
-  // Margin detection for all sprites.
+    // Margin detection for all sprites.
 
   for(var i = 0; i < allSprites.length; i++){
     var s = allSprites[i];
@@ -79,10 +72,15 @@ function draw(){
   miners.overlap(debris, debrisHit);
 
   // detect collisions between miners
+  miners.bounce(miners);
 
   // detect collisions between miners and obstacles
+  obstacles.displace(miners);
+  obstacles.overlap(obstacles);
+  debris.overlap(obstacles);
 
-  // update movements of miner1 and miner2 according to keyboard inputs
+  // update movements of miner1 and miner2 according to keyboard input
+
 
   if(keyDown(LEFT_ARROW))
     miners[0].rotation -= 4;
@@ -110,16 +108,30 @@ function draw(){
 
   drawSprites();
 
+  if(miners[0].score == winScore){
+    noLoop();
+    text("Miner 1 is winner ", width/2, height/2);
+    for (var i = allSprites.length; i--; allSprites[i].remove());
+  }
+
+  if(miners[1].score == winScore){
+    noLoop();
+    text("Miner 2 is winner ", width/2, height/2);
+    for (var i = allSprites.length; i--; allSprites[i].remove());
+  }
+
   if(debris.length == 0){
-    if(miners[0].score > miners[1].score) {
-      text("Miner 1 is winner ", width/2, height/2);
-    } else {
-      text("Miner 2 is winner ", width/2, height/2);
+    for(var i = 0; i < totalDebris;i++){
+      var ang = random(360);
+      var px = width/2 + 1000 * cos(radians(ang));
+      var py = height/2+ 1000 * sin(radians(ang));
+      createDebris(1, px, py);
     }
+
   }
 
 
-  // draw all sprites
+
 
 } // End draw loop
 
@@ -133,12 +145,13 @@ function createMiner(){
 
   miner.addImage("normal", minerImage);
   miner.addAnimation("thrust", "assets/asteroids_ship0002.png", "assets/asteroids_ship0007.png");
-  miner.maxSpeed = 6;
-  miner.friction = .02;
+  miner.maxSpeed = 3;
+  miner.friction = .05;
   miner.setCollider("circle",0,0,20);
   miner.debug = true;
   miner.score = 0;
   miners.add(miner);
+  //miners.life = 100;
   return miner;
 }
 
@@ -150,6 +163,7 @@ function createDebris(type,x,y){
   a.rotationSpeed = .5;
   //a.debug = true;
   a.type = type;
+  a.life = 1000;
 
   if(type == 2)
     a.scale = .6;
@@ -166,12 +180,20 @@ function createDebris(type,x,y){
 function debrisHit(miner, Debris){
   Debris.remove();
   miner.score++;
+  createObstacle(miner.position.x+random(5), miner.position.y+random(5));
+  createDebris(1,random(width),random(height));
+
 
 }
 
 
-function createObstacle(){
-
+function createObstacle(x,y){
+  var obstacle = createSprite(x,y,random(100),random(100));
+  obstacle.shapeColor = color(random(255),random(255),random(255));
+  obstacle.life=1000;
+  obstacle.rotationSpeed = .1;
+  obstacle.immovable = true;
+  obstacles.add(obstacle);
 }
 
 
