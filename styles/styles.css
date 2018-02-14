@@ -1,0 +1,9 @@
+.wrapper {
+  display: grid;
+}
+
+.centerItem {
+  
+  align-self: center;
+  justify-self: center;
+}
