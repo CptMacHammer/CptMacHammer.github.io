@@ -129,7 +129,7 @@ function newGame(){
 } //end newGame
 function createMiner(){
   var miner = createSprite(random(100,width/2), random(100,height/2));
-  var minerImage = loadImage("assets/asteroids_Ship0001.png");
+  var minerImage = loadImage("assets/asteroids_ship0001.png");
 
   miner.addImage("normal", minerImage);
   miner.addAnimation("thrust", "assets/asteroids_ship0002.png", "assets/asteroids_ship0007.png");
