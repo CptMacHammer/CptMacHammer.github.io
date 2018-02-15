@@ -1,3 +1,4 @@
+//Patrick Perez wrote it yo
 //Globals
 var miner1; //player 1
 var miner2; //player 2
@@ -310,7 +311,7 @@ function mutantAttackMiner(scarySpaceMutant, miner){
   } else if (miners[1].shields <= 0){
     noLoop();
     text("GAME OVER",width/2, height/2);
-    text("Miner 1 Is WINNER",width/2, height/2+100);
+    text("Miner 2 Is WINNER",width/2, height/2+100);
   } else {
     miner.shields -= 100;
     scarySpaceMutant.remove();
