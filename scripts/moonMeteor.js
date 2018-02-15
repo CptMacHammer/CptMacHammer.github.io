@@ -36,7 +36,7 @@ function preload(){
   spaceLlama_Sprite_Sheet = loadSpriteSheet('assets/llama.png',48,48,12);
   spaceLlamaAnimation = loadAnimation(spaceLlama_Sprite_Sheet);
 
-  scarySpaceMutantImg = loadImage("assets/scarySpaceMutant.png");
+  scarySpaceMutantImg = loadImage("assets/scarySpaceMutant.PNG");
 
   bulletImage = loadImage("assets/asteroids_bullet.png");
 
